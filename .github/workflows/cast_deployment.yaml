@@ -49,7 +49,7 @@ jobs:
           CHANGE_MONITOR_ENV: "Cast Development"
           CHANGE_MONITOR_SERVICE: "cast"
           CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
-          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:cast:Cast Development"
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.run_id }}:${{ github.run_attempt }}:${{ github.workflow }}:${{ github.job }}:cast:Cast Development"
         run: |
           export DEPLOY_VERSION="$(git rev-parse HEAD)"
           bash .github/scripts/rollouts-reporter.sh bootstrap
@@ -68,7 +68,7 @@ jobs:
           CHANGE_MONITOR_ENV: "Cast Development"
           CHANGE_MONITOR_SERVICE: "cast"
           CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
-          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:cast:Cast Development"
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.run_id }}:${{ github.run_attempt }}:${{ github.workflow }}:${{ github.job }}:cast:Cast Development"
           CHANGE_MONITOR_OUTCOME: ${{ job.status }}
         run: bash .github/scripts/rollouts-reporter.sh finish
 
@@ -106,7 +106,7 @@ jobs:
           CHANGE_MONITOR_ENV: "Cast Production"
           CHANGE_MONITOR_SERVICE: "cast"
           CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
-          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:cast:Cast Production"
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.run_id }}:${{ github.run_attempt }}:${{ github.workflow }}:${{ github.job }}:cast:Cast Production"
         run: |
           export DEPLOY_VERSION="$(git rev-parse HEAD)"
           bash .github/scripts/rollouts-reporter.sh bootstrap
@@ -125,6 +125,6 @@ jobs:
           CHANGE_MONITOR_ENV: "Cast Production"
           CHANGE_MONITOR_SERVICE: "cast"
           CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
-          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:cast:Cast Production"
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.run_id }}:${{ github.run_attempt }}:${{ github.workflow }}:${{ github.job }}:cast:Cast Production"
           CHANGE_MONITOR_OUTCOME: ${{ job.status }}
         run: bash .github/scripts/rollouts-reporter.sh finish
