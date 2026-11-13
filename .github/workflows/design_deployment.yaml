@@ -37,6 +37,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Report Rollouts deployment start
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          CHANGE_MONITOR_ENV: "Design"
+          CHANGE_MONITOR_SERVICE: "gallery"
+          CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:gallery:Design"
+        run: |
+          export DEPLOY_VERSION="$(git rev-parse HEAD)"
+          bash .github/scripts/rollouts-reporter.sh bootstrap
+          bash .github/scripts/rollouts-reporter.sh start
       - name: Deploy to Netlify
         id: deploy
         run: |
@@ -44,3 +55,13 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_GALLERY_SITE_ID }}
+      - name: Report Rollouts deployment finish
+        if: always()
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          CHANGE_MONITOR_ENV: "Design"
+          CHANGE_MONITOR_SERVICE: "gallery"
+          CHANGE_MONITOR_SOURCE: ${{ github.server_url }}/${{ github.repository }}
+          CHANGE_MONITOR_ACTOR: "github-actions:${{ github.workflow }}:${{ github.job }}:gallery:Design"
+          CHANGE_MONITOR_OUTCOME: ${{ job.status }}
+        run: bash .github/scripts/rollouts-reporter.sh finish
